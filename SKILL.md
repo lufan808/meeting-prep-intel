@@ -11,7 +11,7 @@ Prepare a source-backed, BD-ready brief that helps the user walk into a first me
 
 - Use the available web search, page-opening, browser, file, and writing tools in the current environment.
 - If parallel agents are available, run the four research streams in parallel. If they are not, run the same streams sequentially; do not omit a stream silently.
-- Search newest-first and default to the last 90 days.
+- Search newest-first and start with the last 90 days. If the 90-day window does not provide enough dated signals or direct evidence for the user's meeting question, expand once to 180 days, explain why, and show both windows in the output. If the user specifies a different period, use it as the initial window and still disclose any expansion.
 - Deliver the finished brief as Markdown unless the user asks for another format.
 - Preserve the distinction between fact, source-reported claim, community opinion, and assistant inference.
 
@@ -30,7 +30,7 @@ Extract:
 
 - `name` — required person name;
 - `context` — company, role, meeting purpose, or the user's own role when provided;
-- `signal_window` — default to the last 90 days, unless the user specifies another period.
+- `signal_window` — default initial window is the last 90 days, unless the user specifies another period. Use an effective 180-day window only when the initial window is insufficient. Always state the generation date, initial window, effective window, and the reason for expansion before research begins and in the final brief.
 
 If the name is ambiguous, resolve it with the company, role, location, official bio, or another anchor. Ask the user to confirm rather than merging similarly named people.
 
@@ -46,10 +46,17 @@ Extract the target name, company or role, meeting purpose, and signal window. If
 
 Find and open at least two independent identity anchors, preferably:
 
-- official or employer bio;
+- official or employer bio, official team directory, official event speaker page, or company press release;
 - personal website, verified social account, LinkedIn, newsletter, podcast, or conference profile.
 
 Record the URLs actually opened. Do not treat a search-result snippet as an opened source. Stop and ask the user to confirm if two similarly named people cannot be separated confidently.
+
+Identity-source hierarchy:
+
+- Use an official employer or organizer page as the primary identity source whenever one directly names the person and current role.
+- A verified personal profile or LinkedIn page is an acceptable self-described identity source, but label it as self-reported rather than official employer confirmation.
+- Reputable media or trade press can corroborate a role when it names the person and organization, but do not let old biography stand in for a current role.
+- Supplier, production-agency, customer, partner, or vendor case studies may support project participation only. They are not primary proof of current identity or job title. If such a source is the only page naming a current title, label the title as externally described, disclose that no official confirmation was found, and do not put the supplier page in the primary identity-source field.
 
 ### Step 1 — Collect four evidence streams
 
@@ -71,6 +78,8 @@ Find reputable journalism, trade press, analyst commentary, conference recaps, o
 
 Gather the person's curated identity from an official bio, employer page, personal site, publisher, conference page, or verified profile. Note what the person consistently emphasizes and what third parties emphasize that the baseline omits. Connect the evidence to the meeting purpose without inventing private business context.
 
+When reporting identity, separate the evidence into `official`, `self-reported`, and `externally described`. Do not cite a supplier or vendor case study as if it were an official biography. If no official employer or organizer page is publicly available, say so explicitly and keep the confidence for the current title below `HIGH`.
+
 For each usable signal, record:
 
 - exact date and venue;
@@ -79,9 +88,20 @@ For each usable signal, record:
 - self-described versus externally described framing;
 - confidence: `HIGH ✓`, `BREAKING ⚠`, or `LOW`.
 
+### Step 1.25 — Handle user-provided materials
+
+If the user attaches or supplies a PDF, project deck, briefing, transcript, or other document, read it as a separate evidence layer before drafting.
+
+- Classify it as `user-provided`, `project-side`, or `internal material`; do not present it as public verification.
+- Extract concrete claims, dates, names, metrics, project details, and stated positioning.
+- Keep “the material says” separate from independently verified public facts.
+- Do not use a user-provided document to upgrade a person's identity, current title, or official status unless an appropriate public source confirms it.
+- When the material changes the meeting questions, add a short “provided-material facts and items to verify” section to the brief.
+- If the document conflicts with public sources, show the conflict and ask which version should govern the meeting preparation; do not silently merge them.
+
 ### Step 1.5 — Optional source enrichment
 
-If the current environment provides a real-time public-post lookup service, such as **sensight**, use it only as a source-enrichment layer. Its purpose is narrow: upgrade a verified account homepage into the actual recent post URL, timestamp, and short verbatim excerpt.
+If the current environment provides a real-time public-post lookup capability, use it only as a source-enrichment layer. Its purpose is narrow: upgrade a verified account homepage into the actual recent post URL, timestamp, and short verbatim excerpt.
 
 Apply these rules:
 
@@ -99,7 +119,7 @@ This layer improves citation precision. It must not change the identity resoluti
 - Prefer primary sources for the person's own words and reputable sources for third-party claims.
 - Separate fact, source-reported claim, community opinion, and the assistant's inference.
 - Keep quotes short and paraphrase the rest. Do not reproduce long articles or posts.
-- If recent evidence is thin, say so and lower the confidence instead of filling gaps with old biography.
+- If recent evidence is thin, first test whether the initial 90-day window is insufficient for the meeting question. Expand to 180 days only when necessary, state the reason, and label older signals as expanded-window context. A longer window may add context, but it does not upgrade an old or indirect identity source into current official confirmation.
 - Do not infer private motives, sensitive traits, or confidential information from public traces.
 
 ### Step 3 — Synthesize the current narrative
@@ -161,7 +181,8 @@ Save the brief where the user can reuse it. Keep the Markdown version as the sou
 Before finishing, verify:
 
 - identity is unambiguous;
-- the exact signal window and generation date are visible;
+- the primary identity source is official when available, and any self-reported or supplier/vendor source is labeled by type;
+- the generation date, initial signal window, effective signal window, and any expansion reason are visible;
 - every material claim has an opened source or is labeled as inference;
 - at least three dated recent signals are included when public evidence allows;
 - self-versus-others comparison uses meaningful phrases, not isolated keywords;
