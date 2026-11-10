@@ -179,7 +179,7 @@ cp -R portable-pre-meeting-intel ~/.claude/skills/
 
 本项目采用 MIT License，详见根目录的 [`LICENSE`](LICENSE) 文件。
 
-版权所有：DD-ai427，2026。
+版权所有：lufan808，2026。
 
 本项目仅提供会前研究方法、提示词和输出模板，不保证研究结果的准确性、完整性或适用性。使用者应自行核验来源，并自行承担使用结果。
 
