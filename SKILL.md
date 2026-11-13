@@ -15,6 +15,19 @@ Prepare a source-backed, BD-ready brief that helps the user walk into a first me
 - Deliver the finished brief as Markdown unless the user asks for another format.
 - Preserve the distinction between fact, source-reported claim, community opinion, and assistant inference.
 
+## Portable module model
+
+Treat the workflow as six logical modules with explicit hand-offs. These are reasoning boundaries, not required services or platform-specific packages:
+
+1. **Collector** — gather dated signals from the four evidence streams;
+2. **Calibrator** — verify identity, attribution, source type, date, and confidence;
+3. **Comparator** — organize own voice, community reaction, third-party framing, and official baseline for comparison;
+4. **Synthesizer** — turn calibrated records into a current narrative and meeting questions;
+5. **Renderer** — write the result using [references/output-template.md](references/output-template.md);
+6. **Auditor** — run the quality gate in [references/quality-gate.md](references/quality-gate.md).
+
+Use [references/evidence-schema.md](references/evidence-schema.md) as the neutral record format between modules. If the runtime cannot run parallel tasks or a source-enrichment layer, run the same modules sequentially with the same fields. Do not add a hard dependency just to reproduce a module name.
+
 The workflow may optionally use a real-time public social-source enrichment layer when the current environment provides one. Use it only to verify a recent public post; the core research and synthesis must remain complete without it.
 
 ## Trigger and inputs
@@ -88,6 +101,8 @@ For each usable signal, record:
 - self-described versus externally described framing;
 - confidence: `HIGH ✓`, `BREAKING ⚠`, or `LOW`.
 
+Use the neutral fields in [references/evidence-schema.md](references/evidence-schema.md) when keeping an intermediate evidence ledger.
+
 ### Step 1.25 — Handle user-provided materials
 
 If the user attaches or supplies a PDF, project deck, briefing, transcript, or other document, read it as a separate evidence layer before drafting.
@@ -121,6 +136,8 @@ This layer improves citation precision. It must not change the identity resoluti
 - Keep quotes short and paraphrase the rest. Do not reproduce long articles or posts.
 - If recent evidence is thin, first test whether the initial 90-day window is insufficient for the meeting question. Expand to 180 days only when necessary, state the reason, and label older signals as expanded-window context. A longer window may add context, but it does not upgrade an old or indirect identity source into current official confirmation.
 - Do not infer private motives, sensitive traits, or confidential information from public traces.
+
+Before synthesis, apply [references/quality-gate.md](references/quality-gate.md). If the bundled `scripts/validate_brief.py` is available, run it against the final Markdown; its result complements, but does not replace, source and attribution review.
 
 ### Step 3 — Synthesize the current narrative
 
@@ -189,3 +206,9 @@ Before finishing, verify:
 - talking points are specific, contextual, and actionable;
 - blocked sources, missing signals, and uncertain community claims are disclosed;
 - the brief explains the research boundary and does not imply access to private information.
+
+If the bundled validator is available, run:
+
+```text
+python3 scripts/validate_brief.py path/to/brief.md
+```

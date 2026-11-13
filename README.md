@@ -63,6 +63,12 @@ Step 2      合成当前叙事，完成自述 vs 外界对照
 Step 3      输出 Markdown 会前简报；如环境支持，也可继续生成文档
 ```
 
+## 模块化实现
+
+这套 Skill 借鉴了完整研究引擎的模块化思想，但保留通用运行方式。研究流程被拆成六个逻辑模块：采集、校准、对照、合成、渲染和审计。模块是清晰的工作边界，不代表必须安装某个 Agent、搜索服务或内部工具。
+
+中间证据使用统一字段记录，最终结果可用质量校验脚本检查。即使当前环境不支持并行任务、社交内容增强或文档写入，仍然可以按同样的模块顺序完成 Markdown 简报。
+
 ## 运行说明
 
 这个 Skill 不绑定特定的 Agent 平台。当前环境支持并行任务时，四条研究线可以并行执行；不支持时，仍按同样的四条线依次完成。可选的信源增强能力不可用时，只会降低具体社交内容链接的精度，不会阻塞简报生成。
@@ -143,7 +149,11 @@ portable-pre-meeting-intel/
 ├── README.md                        # 使用说明与能力介绍
 ├── agents/openai.yaml               # Codex 界面元数据
 ├── references/output-template.md    # 六段式简报模板
-└── examples/quick-start.md          # 最小使用示例
+├── references/evidence-schema.md    # 中间证据记录格式与模块交接
+├── references/quality-gate.md       # 交付前质量检查
+├── scripts/validate_brief.py        # Markdown 结构校验
+├── examples/quick-start.md          # 最小使用示例
+└── tests/                           # 脱敏 golden 测试
 ```
 
 ## 安装
@@ -161,6 +171,13 @@ cp -R portable-pre-meeting-intel ~/.claude/skills/
 ```
 
 两种环境都读取目录中的 `SKILL.md`。`agents/openai.yaml` 只提供 Codex 的界面名称，不影响 Claude Code。
+
+如果需要检查一份已经生成的 Markdown 简报：
+
+```bash
+python3 scripts/validate_brief.py path/to/brief.md
+python3 -m unittest discover -s tests -v
+```
 
 ## 设计原则
 
