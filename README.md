@@ -30,7 +30,7 @@
 例如：
 
 ```text
-/portable-pre-meeting-intel Patrick Collison Stripe 评估跨境支付合作
+/portable-pre-meeting-intel Rory Sutherland 营销投放、品牌建设和效果衡量
 ```
 
 也可以直接用自然语言：
