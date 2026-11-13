@@ -10,12 +10,12 @@ from pathlib import Path
 
 
 REQUIRED_SECTIONS = (
-    "背景与关键转折",
-    "最近信号",
-    "自述 vs 外界叙事",
-    "工作方式与价值判断",
-    "可直接使用的 Talking Points",
-    "可信度与搜索备注",
+    "1. 🌱 背景与关键转折",
+    "2. 🔥 最近信号",
+    "3. 🧭 自述 vs 外界叙事",
+    "4. 🧠 工作方式与价值判断",
+    "5. 🎯 会面准备",
+    "6. 📊 可信度与搜索备注",
 )
 
 
@@ -31,8 +31,11 @@ def validate(text: str) -> tuple[list[str], list[str]]:
         errors.append("missing identity card")
 
     for section in REQUIRED_SECTIONS:
-        if section not in text:
+        if not re.search(rf"^## {re.escape(section)}\s*$", text, flags=re.MULTILINE):
             errors.append(f"missing section: {section}")
+
+    if "Talking Points" not in text:
+        errors.append("missing talking points")
 
     links = re.findall(r"\[[^\]]+\]\(https?://[^)]+\)", text)
     if not links:
@@ -40,22 +43,33 @@ def validate(text: str) -> tuple[list[str], list[str]]:
     elif len(links) < 3:
         warnings.append("fewer than three source links; confirm that the evidence is sufficient")
 
-    if not re.search(r"\bHIGH\b|\bBREAKING\b|\bLOW\b", text):
+    if not re.search(r"可信度\s*`?(?:HIGH|MEDIUM|LOW)\b", text):
         errors.append("missing confidence labels")
+
+    if not re.search(r"时效\s*`?(?:BREAKING|RECENT|OLDER)\b", text):
+        errors.append("missing freshness labels")
+
+    if not re.search(r"^### \d{4}-\d{2}-\d{2} · ", text, flags=re.MULTILINE):
+        warnings.append("no dated signal heading; explain thin evidence")
+
+    for label in ("生成日期", "初始窗口", "实际窗口"):
+        if label not in text:
+            errors.append(f"missing window metadata: {label}")
 
     if "90" not in text and "90天" not in text:
         warnings.append("initial 90-day window is not visible")
 
-    if "180" in text or "180天" in text:
-        if not re.search(r"扩展|原因|insufficient|不足", text, flags=re.IGNORECASE):
+    effective_window = re.search(r"实际窗口[^\n]*180\s*天", text)
+    if effective_window:
+        if not re.search(r"扩展原因\s*[:：]\s*\S+", text):
             errors.append("180-day window is mentioned without an expansion reason")
 
     if re.search(r"供应商|制作方|vendor|supplier", text, flags=re.IGNORECASE):
         if not re.search(r"身份|职位|项目参与|identity|title|participation", text, flags=re.IGNORECASE):
             warnings.append("supplier/vendor evidence needs an explicit identity or project-participation boundary")
 
-    if re.search(r"用户提供|附件|user-provided|provided material", text, flags=re.IGNORECASE):
-        if not re.search(r"待核实|独立|separate|verify|核验", text, flags=re.IGNORECASE):
+    if re.search(r"用户提供材料\s*[:：]|附件\s*[:：]", text, flags=re.IGNORECASE):
+        if not re.search(r"材料待核实\s*[:：]", text):
             errors.append("user-provided material is not separated from public verification")
 
     return errors, warnings

@@ -16,9 +16,12 @@ Use one record for every material signal before synthesis. The record can live i
 | `quote_or_paraphrase` | yes | Short quote or faithful paraphrase; do not reproduce long source text |
 | `framing` | yes | How the source presents or interprets the signal |
 | `identity_status` | yes for identity claims | `official`, `self-reported`, `externally-described`, or `user-provided` |
-| `confidence` | yes | `HIGH ✓`, `BREAKING ⚠`, or `LOW` |
+| `confidence` | yes | `HIGH`, `MEDIUM`, or `LOW`; strength of support, not recency |
+| `freshness` | yes | `BREAKING`, `RECENT`, or `OLDER`; timing, not truthfulness |
 | `window` | yes | `initial-90d`, `expanded-180d`, or the user's specified window |
-| `verification_status` | yes | `opened`, `homepage-only`, `user-provided`, or `needs-follow-up` |
+| `verification_status` | yes | `opened`, `homepage-only`, `blocked`, `user-provided`, or `needs-follow-up` |
+| `underlying_event_id` | yes for repeated reports | Shared identifier for articles repeating the same announcement; count as one event |
+| `conflicts_with` | when applicable | IDs of records making incompatible claims |
 
 ## Module hand-offs
 
@@ -39,3 +42,5 @@ If the runtime cannot run parallel tasks or a source-enrichment layer, keep the 
 - A user-provided document is a separate evidence layer. It can supply project facts and questions to verify, but it is not public verification.
 - An assistant inference must be marked as an inference and linked to the records that support it.
 - A third-party post must never be attributed to the target person merely because it mentions them.
+- Do not treat a source's date as evidence of accuracy. A new report can have low confidence; an older official biography can establish background but not a current role.
+- Preserve an evidence ledger while researching, even if it remains an intermediate artifact. Report material gaps and conflicts in the brief.
