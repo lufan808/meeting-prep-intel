@@ -1,4 +1,4 @@
-# Portable Pre-Meeting Intel
+# Meeting Prep Intel
 
 > 在第一次见面前，快速研究一个人最近正在做什么、说什么，以及外界如何理解他。
 
@@ -24,13 +24,13 @@
 ## 怎么用
 
 ```text
-/portable-pre-meeting-intel [姓名] [可选：公司 / 角色 / 会面目的]
+/meeting-prep-intel [姓名] [可选：公司 / 角色 / 会面目的]
 ```
 
 例如：
 
 ```text
-/portable-pre-meeting-intel Rory Sutherland 营销投放、品牌建设和效果衡量
+/meeting-prep-intel Rory Sutherland 营销投放、品牌建设和效果衡量
 ```
 
 也可以直接用自然语言：
@@ -138,7 +138,7 @@ Step 3      质量检查并输出 Markdown 会前简报；如环境支持，也�
 ## 目录结构
 
 ```text
-portable-pre-meeting-intel/
+meeting-prep-intel/
 ├── SKILL.md                         # 核心研究方法、流程和质量标准
 ├── README.md                        # 使用说明与能力介绍
 ├── agents/openai.yaml               # Codex 界面元数据
@@ -156,13 +156,13 @@ portable-pre-meeting-intel/
 ### Codex
 
 ```bash
-cp -R portable-pre-meeting-intel ~/.codex/skills/
+cp -R meeting-prep-intel ~/.codex/skills/
 ```
 
 ### Claude Code
 
 ```bash
-cp -R portable-pre-meeting-intel ~/.claude/skills/
+cp -R meeting-prep-intel ~/.claude/skills/
 ```
 
 两种环境都读取目录中的 `SKILL.md`。`agents/openai.yaml` 只提供 Codex 的界面名称，不影响 Claude Code。

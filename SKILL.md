@@ -1,9 +1,9 @@
 ---
-name: portable-pre-meeting-intel
+name: meeting-prep-intel
 description: Research a person before a meeting using recent public signals, their own voice, community reaction, third-party coverage, and verified identity anchors. Use for pre-meeting research, background briefing, or questions to ask someone.
 ---
 
-# Portable Pre-Meeting Intel
+# Meeting Prep Intel
 
 Prepare a source-backed brief the user can take into a first meeting. Focus on what the person is doing and saying now, and how others interpret the same work.
 
@@ -39,7 +39,7 @@ Use for requests such as:
 - “帮我准备和某人的会面”
 - “研究某人最近在做什么”
 - “会前了解一下某个人”
-- `/portable-pre-meeting-intel [name] [company / role / meeting purpose]`
+- `/meeting-prep-intel [name] [company / role / meeting purpose]`
 
 Record the person, optional organization or role, meeting goal, supplied materials, output destination, and initial/effective windows as defined in [references/input-and-states.md](references/input-and-states.md). Default to 90 days; expand to 180 only if the 90-day evidence is insufficient for the meeting goal. Show the actual start and end dates and expansion reason in the brief.
 
